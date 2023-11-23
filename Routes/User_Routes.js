@@ -10,8 +10,12 @@ router.get('/:id', (req, res) => {
   res.send('Getting the user by id...')
 });
 
-router.post('/', (req, res) => {
-  res.send('Adding new user into the database...')
+router.post('/', async (req, res) => {
+  try {
+    
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 router.delete('/:id', (req, res) => {
