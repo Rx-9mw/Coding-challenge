@@ -16,6 +16,8 @@ mongoose
     console.log('Database is connected...');
   });
 
+app.use(express.json());
+
 app.use('/users', userRoutes);
 
 app.all('*', (req, res) => {

@@ -2,6 +2,8 @@ const express = require('express');
 
 const router = express.Router();
 
+const User = require('../Models/New_User_Model')
+
 router.get('/', (req, res) => {
   res.send('Getting a list of all users...');
 });
@@ -12,7 +14,14 @@ router.get('/:id', (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    
+    if(typeof req.body.username === 'string'){
+      console.log(req.body);
+      const user = new User(req.body);
+      await user.save();
+      res.send('New user added to the database.');
+    }else{
+      res.send('The username should be a String.');
+    }
   } catch (error) {
     console.log(error);
   }
