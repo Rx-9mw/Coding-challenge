@@ -36,8 +36,12 @@ const createUser = async (req, res) => {
   try {
     const streams = req.body.numberOfCurrentStreams;
 
+    // Checking if the username is in the request.
+    if(req.body.username === undefined){ return res.send('ERROR: The username should be defined in the request.') }
+
     // Checking if the username is a string.
     if(typeof req.body.username !== 'string'){ return res.send('ERROR: The username should be a String.') }
+
 
     //When the number of streams is defined we chack if its a whole number and if its between 0 and 3.
     if(streams !== undefined){
@@ -46,8 +50,10 @@ const createUser = async (req, res) => {
       }
     }
 
+    // Creating and saving a new user.
     const user = new User(req.body);
     await user.save();
+
     res.send('New user added to the database.');
   } catch (error) {
     res.send('ERROR: ' + error.message);
