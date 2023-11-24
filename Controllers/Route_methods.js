@@ -31,7 +31,7 @@ const getUserById = async (req, res) => {
 
 }
 // POST
-const postUser = async (req, res) => {
+const createUser = async (req, res) => {
   try {
     const streams = req.body.numberOfCurrentStreams;
 
@@ -69,7 +69,7 @@ const deleteUser = async (req, res) => {
 
 }
 //PATCH
-const patchUser = async (req, res) => {
+const updateUser = async (req, res) => {
   try {
     const id = req.params.id;
     const update = req.body;
@@ -106,4 +106,4 @@ const patchUser = async (req, res) => {
 }
 
 // Exporting the functions
-module.exports = {getAllUsers, getUserById, postUser, deleteUser, patchUser};
+module.exports = {getAllUsers, getUserById, createUser, deleteUser, updateUser};
