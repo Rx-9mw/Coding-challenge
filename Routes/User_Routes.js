@@ -55,19 +55,39 @@ router.delete('/:id', async (req, res) => {
 
 });
 
+// Finished PATCH request
 router.patch('/:id', async (req, res) => {
   try {
     const id = req.params.id;
     const update = req.body;
-    const user = await User.findById(id);
+    let user;
 
-    user.numberOfCurrentStreams += update.updateNumberOfStreams;
+    // Check if the user with the id is in the database
+    if(await User.findById(id) === null){ return res.send('ERROR: Could not find a user with this id.') }
+    // Check if the request for updating the streams was formed correctly
+    if(update.updateNumberOfStreams === undefined){ return res.status(400).send('ERROR: Invalid PATCH request.') }
 
+    // Assign info from the database to the user object
+    user = await User.findById(id);
+
+    const streams = user.numberOfCurrentStreams + update.updateNumberOfStreams;
+
+    // Check if the streams are between 0-3, the number of passed in streams is a string or if the number has decimal places
+    if (streams > 3 || streams < 0) {
+      return res.send('ERROR: The number of streams cannot be lower than 0 or higher than 3.');
+    } else if(typeof streams === 'string' || streams % 1 !== 0) {
+      return res.send('ERROR: Please input the correct number of streams to update with. (eg. 1, -1)');
+    }
+
+    // Assign the number of streams to the user object and update the database
+    user.numberOfCurrentStreams = streams;
     await User.findByIdAndUpdate(id, user);
 
     res.send('User has been updated.');
+
   } catch (error) {
-    res.send('ERROR: ' + error.message);
+    res.send(`ERROR: ${error.message}`);
+    console.log(error.message);
   }
 });
 
