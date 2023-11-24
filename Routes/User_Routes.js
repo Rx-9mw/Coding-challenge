@@ -57,8 +57,15 @@ router.delete('/:id', async (req, res) => {
 
 });
 
-router.patch('/:id', (req, res) => {
-  
+router.patch('/:id', async (req, res) => {
+  try {
+    const update = req.body;
+    const user = await User.findByIdAndUpdate(req.params.id, update);
+    res.send('User has been updated.');
+
+  } catch (error) {
+    console.log(error.message);
+  }
 });
 
 module.exports = router;
