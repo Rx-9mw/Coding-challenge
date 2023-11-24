@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
     res.send(allUsers);
 
   } catch (error) {
-    console.log(error.message);
+    res.send('ERROR: ' + error.message);
   }
 
 });
@@ -22,8 +22,7 @@ router.get('/:id', async (req, res) => {
     res.send(user);
 
   } catch (error) {
-    res.send("Couldn't find a user with this id.")
-    console.log(error.message)
+    res.send('ERROR: ' + error.message);
   }
 
 });
@@ -39,7 +38,7 @@ router.post('/', async (req, res) => {
     }
 
   } catch (error) {
-    console.log(error.message);
+    res.send('ERROR: ' + error.message);
   }
 
 });
@@ -51,20 +50,24 @@ router.delete('/:id', async (req, res) => {
     res.send('User has been deleted.');
 
   } catch (error) {
-    res.send("Couldn't find a user with this id.")
-    console.log(error.message);
+    res.send('ERROR: ' + error.message);
   }
 
 });
 
 router.patch('/:id', async (req, res) => {
   try {
+    const id = req.params.id;
     const update = req.body;
-    const user = await User.findByIdAndUpdate(req.params.id, update);
-    res.send('User has been updated.');
+    const user = await User.findById(id);
 
+    user.numberOfCurrentStreams += update.updateNumberOfStreams;
+
+    await User.findByIdAndUpdate(id, user);
+
+    res.send('User has been updated.');
   } catch (error) {
-    console.log(error.message);
+    res.send('ERROR: ' + error.message);
   }
 });
 
