@@ -9,6 +9,7 @@ const getAllUsers = async (req, res) => {
 
   } catch (error) {
     res.send('ERROR: ' + error.message);
+    console.log(error.message);
   }
 
 }
@@ -47,6 +48,7 @@ const createUser = async (req, res) => {
     res.send('New user added to the database.');
   } catch (error) {
     res.send('ERROR: ' + error.message);
+    console.log(error.message);
   }
 
 }
