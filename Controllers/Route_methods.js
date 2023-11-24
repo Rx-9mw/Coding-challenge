@@ -1,7 +1,9 @@
 const User = require('../Models/New_User_Model');
 
+// GET
 const getAllUsers = async (req, res) => {
   try {
+    // Pulling and sending all users from the database without __v
     const allUsers = await User.find({}, {__v: 0});
     res.send(allUsers);
 
@@ -10,35 +12,45 @@ const getAllUsers = async (req, res) => {
   }
 
 }
-
+// GET by id
 const getUserById = async (req, res) => {
   try {
     const id = req.params.id;
-    const user = await User.findById(id, {__v: 0});
-    res.send(user);
 
+    // Check if the user with the id is in the database.
+    if(await User.findById(id) === null){ return res.send('ERROR: Could not find a user with this id.') }
+    
+    // Pulling the user with the id form the database.
+    const user = await User.findById(id, {__v: 0});
+    
+    res.send(user);
   } catch (error) {
-    res.send('ERROR: ' + error.message);
+    res.send(`ERROR: The id given is incorrect.`);
+    console.log(error.message);
   }
 
 }
-
+// POST
 const postUser = async (req, res) => {
   try {
-    if(typeof req.body.username === 'string'){
-      const user = new User(req.body);
-      await user.save();
-      res.send('New user added to the database.');
-    }else{
-      res.send('The username should be a String.');
+    const streams = req.body.numberOfCurrentStreams;
+
+    if(typeof req.body.username !== 'string'){ return res.send('ERROR: The username should be a String.') }
+
+    if(streams !== undefined){
+      if(streams !== Number || streams % 1 !== 0)
+      return res.send('ERROR: Please input the correct number of streams for the user.');
     }
 
+    const user = new User(req.body);
+    await user.save();
+    res.send('New user added to the database.');
   } catch (error) {
     res.send('ERROR: ' + error.message);
   }
 
 }
-
+// DELETE
 const deleteUser = async (req, res) => {
   try {
     const id = req.params.id;
@@ -50,14 +62,13 @@ const deleteUser = async (req, res) => {
   }
 
 }
-
+//PATCH
 const patchUser = async (req, res) => {
   try {
     const id = req.params.id;
     const update = req.body;
     let user;
 
-    console.log(await User.findById(id))
     // Check if the user with the id is in the database
     if(await User.findById(id) === null){ return res.send('ERROR: Could not find a user with this id.') }
     
@@ -88,4 +99,5 @@ const patchUser = async (req, res) => {
   }
 }
 
+// Exporting the functions
 module.exports = {getAllUsers, getUserById, postUser, deleteUser, patchUser};
