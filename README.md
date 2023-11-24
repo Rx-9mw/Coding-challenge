@@ -55,7 +55,7 @@ You can access the users and their information in the database by sending a requ
 For the database I decided on using Mongodb. Not only is it quite popular, it also has a great time with managing and sorting through large sets of data. I personally think this was a good choice, looking at the fact that it would be storing massive amouts of small pieces of data like usernames of the people accessing a site as well as their current streams which are a simple whole number.
 
 ## Scalability: 
-Although the app doesn't throw around big amounts of data and the database I used is heavily skewed towards leveraging large amounts of small data, I think the app would have to be heavily optimised to receive and act upon large amounts of requests at the same time. And ofcourse it would have to be deployed on a better service than Render.
+Although the app doesn't throw around big amounts of data and the database I used is heavily skewed towards leveraging large amounts of small data, I think the app would have to be heavily optimised to receive and act upon large amounts of requests at the same time. And of course it would have to be deployed on a better service than Render.
 
 ## My experience:
 Building an API was something I always wanted to try but never got the time to, so learning the ins and outs of API's was a very fun experience. This challenge broadened my knowledge of JavaScript as well. There were some very fun error's I had to solve and I really enjoyed coming up with a solution to this project.
