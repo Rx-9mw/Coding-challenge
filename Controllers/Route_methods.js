@@ -36,11 +36,14 @@ const createUser = async (req, res) => {
   try {
     const streams = req.body.numberOfCurrentStreams;
 
+    // Checking if the username is a string.
     if(typeof req.body.username !== 'string'){ return res.send('ERROR: The username should be a String.') }
 
+    //When the number of streams is defined we chack if its a whole number and if its between 0 and 3.
     if(streams !== undefined){
-      if(streams !== Number || streams % 1 !== 0)
-      return res.send('ERROR: Please input the correct number of streams for the user.');
+      if(typeof streams !== 'number' || streams % 1 !== 0 || streams < 0 || streams > 3){
+        return res.send('ERROR: Please input the correct number of streams for the user.');
+      }
     }
 
     const user = new User(req.body);
