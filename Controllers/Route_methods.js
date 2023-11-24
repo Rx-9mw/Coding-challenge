@@ -54,11 +54,17 @@ const postUser = async (req, res) => {
 const deleteUser = async (req, res) => {
   try {
     const id = req.params.id;
+
+    // Check if the user with the id is in the database.
+    if(await User.findById(id) === null){ return res.send('ERROR: Could not find a user with this id.') }
+
+    // Finding and deleting the user from the database.
     await User.findByIdAndDelete(id);
     res.send('User has been deleted.');
 
   } catch (error) {
-    res.send('ERROR: ' + error.message);
+    res.send(`ERROR: The id given is incorrect.`);
+    console.log(error.message);
   }
 
 }
